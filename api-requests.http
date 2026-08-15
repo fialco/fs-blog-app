@@ -1,0 +1,28 @@
+# all blogs or one blog with id
+GET http://localhost:3001/api/blogs/3
+
+###
+
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+ "author":  "Dr. Gordon Freeman",
+ "url":  "lambdacore.com",
+ "title":  "Basics of Theoretical Physics",
+}
+
+###
+
+# Add id of blog you want to delete in the url such as 3
+DELETE http://localhost:3001/api/blogs/2
+
+###
+
+# Add id of blog you want to update in the url such as 3
+PUT http://localhost:3001/api/blogs/3
+Content-Type: application/json
+
+{
+  "likes": 10
+}

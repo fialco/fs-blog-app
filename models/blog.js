@@ -2,7 +2,7 @@ const { Model, DataTypes } = require("sequelize");
 
 const { sequelize } = require("../util/db");
 
-class Blog extends Model { }
+class Blog extends Model {}
 
 Blog.init(
   {
@@ -24,7 +24,7 @@ Blog.init(
     },
     likes: {
       type: DataTypes.INTEGER,
-      defaultValue: 0
+      defaultValue: 0,
     },
   },
   {
