@@ -1,7 +1,7 @@
-const Blog = require('./blog')
+const Blog = require("./blog");
 
-Blog.sync()
+Blog.sync();
 
 module.exports = {
-  Blog: Blog
-}
+  Blog: Blog,
+};

@@ -7,12 +7,12 @@ router.get("/", async (req, res) => {
   res.json(blogs);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   try {
     const blog = await Blog.create({ ...req.body });
     res.json(blog);
   } catch (error) {
-    return res.status(400).json({ error });
+    next(error);
   }
 });
 
@@ -29,9 +29,13 @@ router.get("/:id", blogFinder, async (req, res) => {
 });
 
 router.put("/:id", blogFinder, async (req, res) => {
-  req.blog.likes = req.body.likes;
-  await req.blog.save();
-  res.json(req.blog);
+  try {
+    req.blog.likes = req.body.likes;
+    await req.blog.save();
+    res.json(req.blog);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.delete("/:id", blogFinder, async (req, res) => {
