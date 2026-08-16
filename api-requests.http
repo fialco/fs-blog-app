@@ -3,8 +3,11 @@ GET http://localhost:3001/api/blogs/
 
 ###
 
+# add token after bearer
+
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: Bearer 
 
 {
  "author":  "Dr. Gordon Freeman",
@@ -33,7 +36,7 @@ POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-  "username": "testaaja",
+  "username": "testaaja@gmail.com",
   "name": "teppo",
   "password": "salainen"
 }
@@ -54,5 +57,6 @@ POST http://localhost:3001/api/login
 Content-Type: application/json
 
 {
-  "username": "testaaja",
+  "username": "testaaja@gmail.com",
+  "password": "salainen"
 }
