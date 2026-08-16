@@ -41,9 +41,19 @@ router.put("/:id", blogFinder, async (req, res) => {
   }
 });
 
-router.delete("/:id", blogFinder, async (req, res) => {
-  await req.blog.destroy();
-  res.status(204).end();
+router.delete("/:id", tokenExtractor, blogFinder, async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.decodedToken.id);
+
+    if (req.blog.userId === user.id) {
+      await req.blog.destroy();
+      res.status(204).end();
+    } else {
+      return res.status(401).json({ error: "user id invalid" });
+    }
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;
