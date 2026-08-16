@@ -1,5 +1,5 @@
 # all blogs or one blog with id
-GET http://localhost:3001/api/blogs/3
+GET http://localhost:3001/api/blogs/
 
 ###
 
@@ -25,4 +25,34 @@ Content-Type: application/json
 
 {
   "likes": 10
+}
+
+###
+
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "username": "testaaja",
+  "name": "teppo",
+  "password": "salainen"
+}
+
+
+###
+
+PUT http://localhost:3001/api/users/testaaja
+Content-Type: application/json
+
+{
+  "name": "matti"
+}
+
+###
+
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+  "username": "testaaja",
 }
