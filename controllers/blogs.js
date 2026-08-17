@@ -4,7 +4,13 @@ const { Blog, User } = require("../models");
 const { tokenExtractor } = require("../util/middleware");
 
 router.get("/", async (req, res) => {
-  const blogs = await Blog.findAll();
+  const blogs = await Blog.findAll({
+    attributes: { exclude: ["userId"] },
+    include: {
+      model: User,
+      attributes: ["name"],
+    },
+  });
   res.json(blogs);
 });
 
@@ -22,7 +28,7 @@ router.post("/", tokenExtractor, async (req, res, next) => {
 const blogFinder = async (req, res, next) => {
   req.blog = await Blog.findByPk(req.params.id);
   if (!req.blog) {
-    return res.status(404).end();
+    return res.status(404).json({ error: "could not find blog with given id" });
   }
   next();
 };
