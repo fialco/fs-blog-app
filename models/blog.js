@@ -26,11 +26,15 @@ Blog.init(
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: "users", key: "id" },
+    },
   },
   {
     sequelize,
     underscored: true,
-    timestamps: false,
     modelName: "blog",
   },
 );
