@@ -9,7 +9,7 @@ router.post("/", async (req, res) => {
   await Blog.destroy({
     where: {},
   });
-  res.send(200);
+  res.sendStatus(200);
 });
 
 module.exports = router;
