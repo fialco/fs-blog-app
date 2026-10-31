@@ -28,6 +28,7 @@
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.23.1",
     "sequelize": "^6.37.8",
+    "umzug": "^3.8.3",
     "wait-on": "^9.5.1"
   },
   "devDependencies": {
