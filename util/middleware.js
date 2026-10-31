@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const logger = require("./logger");
 const { SECRET } = require("../util/config");
+const Session = require("../models/session");
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });
@@ -57,12 +58,24 @@ const tokenExtractor = (req, res, next) => {
 
   if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
     try {
+      req.token = authorization.substring(7);
       req.decodedToken = jwt.verify(authorization.substring(7), SECRET);
     } catch {
-      return res.status(401).json({ error: "token invalid" });
+      return res.status(401).json({ error: "Token invalid" });
     }
   } else {
-    return res.status(401).json({ error: "token missing" });
+    return res.status(401).json({ error: "Token missing" });
+  }
+  next();
+};
+
+const verifySession = async (req, res, next) => {
+  const session = await Session.findOne({
+    where: { userId: req.decodedToken.id, token: req.token },
+  });
+
+  if (!session) {
+    return res.status(401).json({ error: "Session invalid" });
   }
   next();
 };
@@ -71,4 +84,5 @@ module.exports = {
   unknownEndpoint,
   errorHandler,
   tokenExtractor,
+  verifySession,
 };

@@ -2,7 +2,7 @@ const router = require("express").Router();
 
 const { Op } = require("sequelize");
 const { Blog, User } = require("../models");
-const { tokenExtractor } = require("../util/middleware");
+const { tokenExtractor, verifySession } = require("../util/middleware");
 
 router.get("/", async (req, res) => {
   const where = {};
@@ -34,7 +34,7 @@ router.get("/", async (req, res) => {
   res.json(blogs);
 });
 
-router.post("/", tokenExtractor, async (req, res, next) => {
+router.post("/", tokenExtractor, verifySession, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.decodedToken.id);
     const body = req.body;
@@ -75,19 +75,25 @@ router.put("/:id", blogFinder, async (req, res) => {
   }
 });
 
-router.delete("/:id", tokenExtractor, blogFinder, async (req, res, next) => {
-  try {
-    const user = await User.findByPk(req.decodedToken.id);
+router.delete(
+  "/:id",
+  tokenExtractor,
+  verifySession,
+  blogFinder,
+  async (req, res, next) => {
+    try {
+      const user = await User.findByPk(req.decodedToken.id);
 
-    if (req.blog.userId === user.id) {
-      await req.blog.destroy();
-      res.status(204).end();
-    } else {
-      return res.status(401).json({ error: "user id invalid" });
+      if (req.blog.userId === user.id) {
+        await req.blog.destroy();
+        res.status(204).end();
+      } else {
+        return res.status(401).json({ error: "user id invalid" });
+      }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
-  }
-});
+  },
+);
 
 module.exports = router;
