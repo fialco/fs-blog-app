@@ -39,26 +39,30 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
-  const where = {};
+router.get("/:id", async (req, res, next) => {
+  try {
+    const where = {};
 
-  if (req.query.read) {
-    where.read = req.query.read;
-  }
+    if (req.query.read) {
+      where.read = req.query.read;
+    }
 
-  const user = await User.findByPk(req.params.id, {
-    attributes: { exclude: ["hashedPassword"] },
-    include: {
-      model: Blog,
-      as: "readings",
-      attributes: { exclude: ["userId", "createdAt", "updatedAt"] },
-      through: { attributes: ["read", "id"], where },
-    },
-  });
-  if (user) {
-    res.json(user);
-  } else {
-    res.status(404).end();
+    const user = await User.findByPk(req.params.id, {
+      attributes: { exclude: ["hashedPassword"] },
+      include: {
+        model: Blog,
+        as: "readings",
+        attributes: { exclude: ["userId", "createdAt", "updatedAt"] },
+        through: { attributes: ["read", "id"], where },
+      },
+    });
+    if (user) {
+      res.json(user);
+    } else {
+      return res.status(404).json({ error: "User not found" });
+    }
+  } catch (error) {
+    next(error);
   }
 });
 
