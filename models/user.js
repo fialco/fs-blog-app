@@ -30,6 +30,11 @@ User.init(
         len: 60,
       },
     },
+    disabled: {
+      type: DataTypes.BOOLEAN,
+      allownull: false,
+      defaultValue: false,
+    },
   },
   {
     sequelize,
