@@ -7,24 +7,31 @@ router.post("/", tokenExtractor, verifySession, async (req, res, next) => {
   try {
     const { blogId, userId } = req.body;
 
+    if (!blogId || !userId) {
+      return res.status(400).json({ error: "Give both blogId and userId" });
+    }
+
     const loggedUser = await User.findByPk(req.decodedToken.id, {
       attributes: { exclude: ["hashedPassword"] },
     });
+
     const readingListUser = await User.findByPk(userId);
 
-    if (
-      !loggedUser ||
-      !readingListUser ||
-      loggedUser.id !== readingListUser.id
-    ) {
-      return res.status(400).json({ error: "User id invalid" });
+    if (!readingListUser) {
+      return res
+        .status(404)
+        .json({ error: "User with a given ID does not exist." });
+    }
+
+    if (!loggedUser || loggedUser.id !== readingListUser.id) {
+      return res.status(404).json({ error: "User id invalid" });
     }
 
     const blog = await Blog.findByPk(blogId);
 
     if (!blog) {
       return res
-        .status(400)
+        .status(404)
         .json({ error: "Blog with a given ID does not exist." });
     }
 

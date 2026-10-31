@@ -5,16 +5,14 @@ const { tokenExtractor, verifySession } = require("../util/middleware");
 
 router.delete("/", tokenExtractor, verifySession, async (req, res) => {
   const userId = req.decodedToken.id;
-  const token = req.token;
-  const userSession = await Session.findOne({
+  const userSession = await Session.findAll({
     where: {
       userId,
-      token,
     },
   });
 
   if (userSession) {
-    Session.destroy({ where: { userId, token } });
+    Session.destroy({ where: { userId } });
     res.send(204);
   } else {
     res.send(401);
