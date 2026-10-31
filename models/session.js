@@ -9,6 +9,7 @@ Session.init(
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     user_id: {
       type: DataTypes.INTEGER,
+      unique: true,
       allownull: false,
       references: { model: "users", key: "id" },
     },
