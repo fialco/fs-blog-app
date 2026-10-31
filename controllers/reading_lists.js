@@ -7,7 +7,9 @@ router.post("/", tokenExtractor, async (req, res, next) => {
   try {
     const { blogId, userId } = req.body;
 
-    const loggedUser = await User.findByPk(req.decodedToken.id);
+    const loggedUser = await User.findByPk(req.decodedToken.id, {
+      attributes: { exclude: ["hashedPassword"] },
+    });
     const readingListUser = await User.findByPk(userId);
 
     if (
@@ -50,7 +52,9 @@ router.put("/:id", tokenExtractor, async (req, res, next) => {
   try {
     const { read } = req.body;
 
-    const loggedUser = await User.findByPk(req.decodedToken.id);
+    const loggedUser = await User.findByPk(req.decodedToken.id, {
+      attributes: { exclude: ["hashedPassword"] },
+    });
     const readingListBlog = await ReadingList.findByPk(req.params.id);
 
     if (!readingListBlog) {
