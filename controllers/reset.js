@@ -1,12 +1,15 @@
 const router = require("express").Router();
 
-const { User, Blog } = require("../models");
+const { User, Blog, ReadingList } = require("../models");
 
 router.post("/", async (req, res) => {
-  await User.destroy({
+  await ReadingList.destroy({
     where: {},
   });
   await Blog.destroy({
+    where: {},
+  });
+  await User.destroy({
     where: {},
   });
   res.sendStatus(200);
