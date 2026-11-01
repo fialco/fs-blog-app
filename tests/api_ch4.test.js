@@ -34,6 +34,7 @@ before(async () => {
   createdBlogId = blogResponse.data.id;
 });
 
+// Updated reading list tests to use authentication for adding new blogs to lists
 describe("Reading Lists API", () => {
   it("can add a blog to reading list", async () => {
     const readingListEntry = {
@@ -44,6 +45,9 @@ describe("Reading Lists API", () => {
     const response = await axios.post(
       `${baseUrl}/readinglists`,
       readingListEntry,
+      {
+        headers: { Authorization: `Bearer ${testData.tokens[0]}` },
+      },
     );
 
     assert.ok([200, 201].includes(response.status));
@@ -59,7 +63,9 @@ describe("Reading Lists API", () => {
     };
 
     try {
-      await axios.post(`${baseUrl}/readinglists`, readingListEntry);
+      await axios.post(`${baseUrl}/readinglists`, readingListEntry, {
+        headers: { Authorization: `Bearer ${testData.tokens[0]}` },
+      });
       assert.fail("Should have thrown an error");
     } catch (error) {
       assert.strictEqual(error.response.status, 400);
@@ -72,7 +78,9 @@ describe("Reading Lists API", () => {
     };
 
     try {
-      await axios.post(`${baseUrl}/readinglists`, readingListEntry);
+      await axios.post(`${baseUrl}/readinglists`, readingListEntry, {
+        headers: { Authorization: `Bearer ${testData.tokens[0]}` },
+      });
       assert.fail("Should have thrown an error");
     } catch (error) {
       assert.strictEqual(error.response.status, 400);
@@ -85,7 +93,9 @@ describe("Reading Lists API", () => {
     };
 
     try {
-      await axios.post(`${baseUrl}/readinglists`, readingListEntry);
+      await axios.post(`${baseUrl}/readinglists`, readingListEntry, {
+        headers: { Authorization: `Bearer ${testData.tokens[0]}` },
+      });
       assert.fail("Should have thrown an error");
     } catch (error) {
       assert.strictEqual(error.response.status, 400);
@@ -99,7 +109,9 @@ describe("Reading Lists API", () => {
     };
 
     try {
-      await axios.post(`${baseUrl}/readinglists`, readingListEntry);
+      await axios.post(`${baseUrl}/readinglists`, readingListEntry, {
+        headers: { Authorization: `Bearer ${testData.tokens[0]}` },
+      });
       assert.fail("Should have thrown an error");
     } catch (error) {
       assert.strictEqual(error.response.status, 404);
@@ -113,7 +125,9 @@ describe("Reading Lists API", () => {
     };
 
     try {
-      await axios.post(`${baseUrl}/readinglists`, readingListEntry);
+      await axios.post(`${baseUrl}/readinglists`, readingListEntry, {
+        headers: { Authorization: `Bearer ${testData.tokens[0]}` },
+      });
       assert.fail("Should have thrown an error");
     } catch (error) {
       assert.strictEqual(error.response.status, 404);
@@ -410,6 +424,9 @@ describe("Integration: Reading Lists and Sessions", () => {
     const response = await axios.post(
       `${baseUrl}/readinglists`,
       readingListEntry,
+      {
+        headers: { Authorization: `Bearer ${integrationToken}` },
+      },
     );
 
     assert.ok([200, 201].includes(response.status));
@@ -459,4 +476,3 @@ describe("Integration: Reading Lists and Sessions", () => {
     assert.strictEqual(response.data.read, false);
   });
 });
-
