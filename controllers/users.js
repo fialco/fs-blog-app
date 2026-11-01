@@ -57,7 +57,17 @@ router.get("/:id", async (req, res, next) => {
       },
     });
     if (user) {
-      res.json(user);
+      // Ad hoc solution to get camel case reading list JSON to comply with tests
+      const payload = user.toJSON();
+      payload.readings = payload.readings.map((blog) => {
+        const { reading_list, ...rest } = blog;
+        return {
+          ...rest,
+          readingList: reading_list || null,
+        };
+      });
+
+      res.json(payload);
     } else {
       return res.status(404).json({ error: "User not found" });
     }

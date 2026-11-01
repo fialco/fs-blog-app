@@ -65,11 +65,11 @@ router.put("/:id", tokenExtractor, verifySession, async (req, res, next) => {
     const readingListBlog = await ReadingList.findByPk(req.params.id);
 
     if (!readingListBlog) {
-      return res.status(400).json({ error: "Blog with given ID not found" });
+      return res.status(404).json({ error: "Blog with given ID not found" });
     }
 
     if (!loggedUser || loggedUser.id !== readingListBlog.userId) {
-      return res.status(400).json({ error: "User id invalid" });
+      return res.status(401).json({ error: "User id invalid" });
     }
 
     readingListBlog.read = read;
