@@ -9,6 +9,14 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql
+  test-db:
+    image: postgres:18
+    container_name: postgres-test
+    env_file: .env
+    environment:
+      POSTGRES_DB: test_db
+    ports:
+      - "5433:5432"
 
 volumes:
   postgres_data:
