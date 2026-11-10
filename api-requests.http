@@ -1,24 +1,30 @@
+GET http://localhost:3001/api/users/1
+
+###
+
 # all blogs or one blog with id
 GET http://localhost:3001/api/blogs/
 
 ###
 
 # add token after bearer
-
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: Bearer 
+Authorization: Bearer
 
 {
  "author":  "Dr. Gordon Freeman",
  "url":  "lambdacore.com",
  "title":  "Basics of Theoretical Physics",
+ "year": 2026
 }
 
 ###
 
 # Add id of blog you want to delete in the url such as 3
-DELETE http://localhost:3001/api/blogs/2
+# add token after bearer
+DELETE http://localhost:3001/api/blogs/1
+Authorization: Bearer
 
 ###
 
@@ -32,7 +38,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3001/api/users
+POST http://localhost:3001/api/users/
 Content-Type: application/json
 
 {
@@ -59,4 +65,39 @@ Content-Type: application/json
 {
   "username": "testaaja@gmail.com",
   "password": "salainen"
+}
+
+###
+
+# add token after bearer
+DELETE http://localhost:3001/api/logout
+Content-Type: application/json
+Authorization: Bearer
+
+
+###
+
+POST http://localhost:3001/api/reset
+
+###
+
+# add token after bearer
+POST http://localhost:3001/api/readinglists
+Content-Type: application/json
+Authorization: Bearer
+
+{
+  "blogId": 1,
+  "userId": 1
+}
+
+###
+
+# add token after bearer
+PUT http://localhost:3001/api/readinglists/1
+Content-Type: application/json
+Authorization: Bearer
+
+{
+  "read": true,
 }
